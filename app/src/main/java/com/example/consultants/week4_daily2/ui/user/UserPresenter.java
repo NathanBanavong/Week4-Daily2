@@ -32,7 +32,13 @@ public static final String TAG = UserPresenter.class.getSimpleName() + "_TAG";
             @Override
             public void onSuccess(PersonProfile personProfile) {
                 Log.d(TAG, "onSuccess: " + personProfile.getLogin());
+
+                //TODO test if pass view of textview can display the person info
+
+//                personProfile.getLogin();
+//                personProfile.getId();
                 view.onUserProfile(personProfile);
+
             }
 
             @Override
@@ -43,23 +49,23 @@ public static final String TAG = UserPresenter.class.getSimpleName() + "_TAG";
         });
     }
 
-    public void getProfileRepository(final String inputlogin) {
-        Log.d(TAG, "getProfileRepository: " + inputlogin);
-        remoteDataSource.getUserProfile(inputlogin).enqueue(new Callback<PersonProfile>() {
-            @Override
-            public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
-                getUserProfile(inputlogin);
-                Log.d(TAG, "onResponse: " + inputlogin);
-//                Log.d(TAG, "onResponse: " + response.body().getId());
-            }
-
-            @Override
-            public void onFailure(Call<PersonProfile> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + inputlogin);
-            }
-
-        });
-    }
+//    public void getProfileRepository(final String inputlogin) {
+//        Log.d(TAG, "getProfileRepository: " + inputlogin);
+//        remoteDataSource.getUserProfile(inputlogin).enqueue(new Callback<PersonProfile>() {
+//            @Override
+//            public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
+//                getUserProfile(inputlogin);
+//                Log.d(TAG, "onResponse: " + inputlogin);
+////                Log.d(TAG, "onResponse: " + response.body().getId());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<PersonProfile> call, Throwable t) {
+//                Log.d(TAG, "onFailure: " + inputlogin);
+//            }
+//
+//        });
+//    }
 
 
     @Override

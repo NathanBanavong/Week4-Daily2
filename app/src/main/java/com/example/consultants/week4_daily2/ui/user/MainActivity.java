@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.consultants.week4_daily2.R;
 import com.example.consultants.week4_daily2.model.PersonProfile.PersonProfile;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
     private RemoteDataSource remoteDataSource;
     private UserPresenter presenter;
     private EditText etLoginName;
+    private TextView tvID;
+    private TextView tvLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
     }
 
     public void onBind() {
+        tvLogin = findViewById(R.id.tvLogin);
+        tvID = findViewById(R.id.tvID);
         remoteDataSource = new RemoteDataSource();
         etLoginName = findViewById(R.id.etLoginName);
         presenter = new UserPresenter(new PersonRepository(remoteDataSource));
@@ -57,23 +62,28 @@ public class MainActivity extends AppCompatActivity implements UserContract.View
     public void onShowProfile(View view) {
         Log.d(TAG, "onShowProfile: ");
 
-        presenter.getProfileRepository(etLoginName.toString());
+//        presenter.getProfileRepository(etLoginName.getText().toString());
 
 //passed in text to search from the edittext
-//        remoteDataSource.getUserProfile(etLoginName.toString()).enqueue(new Callback<PersonProfile>() {
-//            @Override
-//            public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
-//                presenter.getUserProfile(etLoginName.toString());
-//                Log.d(TAG, "onResponse: " + Thread.currentThread().getName());
-////                Log.d(TAG, "onResponse: " + response.body().getId());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<PersonProfile> call, Throwable t) {
-//
-//            }
-//
-//        });
+        remoteDataSource.getUserProfile(etLoginName.getText().toString()).enqueue(new Callback<PersonProfile>() {
+            @Override
+            public void onResponse(Call<PersonProfile> call, Response<PersonProfile> response) {
+                presenter.getUserProfile(etLoginName.getText().toString());
+
+                //TODO test the textview display -> issue with '.body()'??
+                tvLogin.setText(response.body().getLogin().toString());
+                tvID.setText(response.body().getId().toString());
+
+                Log.d(TAG, "onResponse: " + Thread.currentThread().getName());
+//                Log.d(TAG, "onResponse: " + response.body().getId());
+            }
+
+            @Override
+            public void onFailure(Call<PersonProfile> call, Throwable t) {
+
+            }
+
+        });
     }
 
     @Override

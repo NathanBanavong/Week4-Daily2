@@ -19,29 +19,31 @@ public class RemoteDataSource {
 
     //instance of retrofit created -> calls base class
     private Retrofit createInstance(){
-        Log.d(TAG, "createInstance: ");
+        Log.d(TAG, "createInstance: " + this.toString());
         
         return new Retrofit.Builder()
                 .baseUrl(NetworkHelper.BASE_GIT_URL)
 //                use for converting the response using Gson
                 .addConverterFactory(GsonConverterFactory.create())
                 //using rxjava adapter
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
-
 
     private  RemoteService getRemoteService() {
         Log.d(TAG, "getRemoteService: " + Thread.currentThread().getName());
         return createInstance().create(RemoteService.class);
     }
 
-    //TODO need for a ProfileResponse? -> get the info? similar to user to randomresponse?
     public Call<PersonProfile> getUserProfile(String login) {
         Log.d(TAG, "getUserProfile: " + login);
+        Log.d(TAG, "getUserProfile: " + Thread.currentThread().getName());
         Retrofit retrofit = createInstance();
         RemoteService service = retrofit.create(RemoteService.class);
-        return getRemoteService().getUserProfile(login);
+
+        //TODO test
+        return service.getUserProfile(login);
+//        return getRemoteService().getUserProfile(login);
     }
 
     //using rxjava
